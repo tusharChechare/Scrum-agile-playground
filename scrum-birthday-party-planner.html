@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scrum Party Simulation: Learner Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f2ff;--ink:#2b1b3d;--card:#fff;--line:#d9d0ee;--pink:#e0457b;--yel:#ffc93c;--teal:#127d79;--mut:#5f5375;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1229;--ink:#f3eefc;--card:#271a3b;--line:#443561;--mut:#b7a9d1;--teal:#4fd1c5}}
+:root[data-theme="dark"]{--bg:#1a1229;--ink:#f3eefc;--card:#271a3b;--line:#443561;--mut:#b7a9d1;--teal:#4fd1c5}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif}
+h1,h2,h3,h4{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0 0 .4em}
+h1{font-size:2rem;font-weight:800}h2{font-size:1.5rem}h3{font-size:1.1rem}
+main{max-width:1040px;margin:0 auto;padding:16px}
+.hero{background:#2b1b3d;color:#fff;border-radius:18px;padding:22px;margin-bottom:14px}
+.hero p{margin:.2em 0;color:#e6dcf7}
+.hero b{color:var(--yel)}
+.map{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.map div{background:rgba(255,255,255,.09);border-radius:12px;padding:8px 12px;color:#e6dcf7;font-size:.9rem}
+.map b{display:block;font-size:1rem}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:8px 2px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.nav button{flex:0 0 auto;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:4px 12px;font:700 .85rem Nunito,sans-serif;cursor:pointer}
+.nav button.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.nav button.done{border-color:var(--teal)}
+.nav button.sp{border-style:dashed}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:18px;margin:10px 0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tag{background:var(--teal);color:#fff;border-radius:12px;padding:2px 10px;font-weight:700;font-size:.8rem}
+.lead{border:2px solid var(--line);border-radius:12px;padding:0 10px;font-weight:700;font-size:.85rem}
+.banner{background:var(--teal);color:#fff;border-radius:12px;padding:6px 14px;margin:10px 0;font-weight:700}
+.goalb{background:var(--card);border:2px solid var(--pink);border-radius:12px;padding:8px 14px;margin:10px 0}
+.timer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--yel);color:#2b1b3d;border-radius:14px;padding:10px 16px;margin:10px 0}
+.timer .t{font:800 2.2rem "Baloo 2",sans-serif;min-width:5ch}
+.timer.late{background:#fbdce5;box-shadow:0 0 0 3px #b0123f inset;animation:late 1.2s ease-in-out infinite}
+.timer.late .t{color:#b0123f}
+@keyframes late{50%{box-shadow:0 0 0 6px #b0123f inset}}
+@media(prefers-reduced-motion:reduce){.timer.late{animation:none}}
+.acs{margin-top:6px;padding:6px 8px;background:var(--bg);border-radius:8px}
+.acl{display:block;font-size:.78rem;font-weight:700;color:var(--mut);margin-bottom:2px}
+.acc{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1.5px solid var(--teal);border-radius:14px;padding:1px 4px 1px 10px;margin:2px 4px 2px 0;font-size:.85rem}
+.acc button{width:20px;height:20px;flex:0 0 20px;border-radius:50%;font-size:.7rem}
+.acs .acin{flex:1 1 160px;padding:4px 8px;font-size:.88rem;min-width:120px}
+.item .acs .sb2{width:auto;height:auto;flex:none;background:var(--ink);color:var(--bg)}.item .acs .sb2.ghost{background:var(--line);color:var(--ink)}
+.acdone{margin:4px 0;font-size:.88rem;color:var(--teal);padding-left:1.2em}
+.acdone li::marker{content:"\2713  "}
+button.b{border:0;background:var(--ink);color:var(--bg);border-radius:10px;padding:8px 14px;font:700 .95rem Nunito,sans-serif;cursor:pointer}
+.timer button.b{background:#2b1b3d;color:#fff}
+button.b.alt{background:var(--pink);color:#fff}
+button.b.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+input,textarea,select{width:100%;border:2px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;background:var(--card);color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row input{flex:1;min-width:140px}
+.tip{border-left:5px solid var(--teal);padding:6px 12px;margin:10px 0;color:var(--mut)}
+.say{font-style:italic;color:var(--mut)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cols.two{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.cols,.cols.two,.map{grid-template-columns:1fr}}
+.col{background:var(--bg);border:2px dashed var(--line);border-radius:12px;padding:10px;min-height:90px}
+.col h3{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.item{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:6px 8px;margin:6px 0}
+.item.one{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.ir{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.ir .sp{flex:1}
+.rk{font-weight:800;color:var(--pink);min-width:1.4em}
+.item input.it{border:2px solid transparent;background:transparent;padding:2px 4px;font-weight:700;flex:1 1 130px;min-width:0;width:auto}
+.item input.it:hover{border-color:var(--line)}
+.pl{font-size:.8rem;color:var(--mut);display:flex;align-items:center;gap:4px}
+input.pi{width:62px;padding:2px 4px}
+.pts{background:var(--yel);color:#2b1b3d;border-radius:12px;padding:0 8px;font-weight:700;font-size:.85rem;white-space:nowrap}
+.item button,.dl button{border:0;background:var(--line);color:var(--ink);border-radius:6px;cursor:pointer;width:28px;height:28px;font-weight:700;flex:0 0 28px}
+.dl{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
+.cap{font-weight:700;margin:8px 0 0;color:var(--teal)}
+.cap.warn{color:#b0123f}
+.frozen{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:10px 0;color:var(--mut)}
+.frozen summary{cursor:pointer;font-weight:700}
+.frozen ol{margin:8px 0 0}
+.lock{display:inline-block;background:var(--mut);color:var(--card);border-radius:8px;padding:0 8px;font-size:.72rem;letter-spacing:.06em;margin-right:6px;font-weight:700}
+.lock.open{background:var(--pink);color:#fff}
+.sc{background:var(--card);border:2px solid var(--line);border-left-width:6px;border-radius:10px;padding:8px 10px;margin:8px 0}
+.sc.prog{border-left-color:var(--yel)}
+.sc.done{border-left-color:var(--teal)}
+.sc h4{margin:0 0 4px;font-size:1rem;display:flex;justify-content:space-between;gap:6px}
+.sc textarea{margin-top:6px;font-size:.9rem;padding:6px 8px}
+.sc .ir{margin-top:6px}
+.sc select{width:auto;padding:2px 6px;font-size:.85rem;border-radius:8px}
+.sb2{border:0;border-radius:8px;background:var(--ink);color:var(--bg);font:700 .82rem Nunito,sans-serif;padding:5px 10px;cursor:pointer}
+.sb2.alt{background:var(--pink);color:#fff}
+.sb2.ghost{background:var(--line);color:var(--ink)}
+.dodl{background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px;font-size:.85rem}
+.chk{display:flex;gap:6px;align-items:flex-start;margin:3px 0;cursor:pointer}
+.chk input{width:auto;margin-top:4px}
+.dec{background:var(--bg);border-radius:8px;padding:6px 8px;font-size:.9rem;white-space:pre-wrap}
+.okb{color:var(--teal);font-weight:700;font-size:.8rem}
+.bud .row{justify-content:space-between}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+@media(max-width:760px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tiles div{background:var(--bg);border-radius:10px;padding:6px 10px}
+.tiles span{display:block;font-size:.75rem;color:var(--mut)}
+.tiles b{font-size:1.15rem}
+.bar{position:relative;height:14px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:8px;border:1px solid var(--line)}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;transition:width .3s}
+.bar .bp{background:repeating-linear-gradient(45deg,rgba(18,125,121,.35) 0 6px,transparent 6px 12px)}
+.bar .ba{background:var(--teal)}
+.bud.over .bar .ba{background:#b0123f}
+.bmsg{margin:6px 0 0;font-size:.9rem}
+.bud.over .bmsg,.pbud.over{color:#b0123f;font-weight:700}
+.legend{font-size:.75rem;color:var(--mut)}
+.pbud{margin-top:10px;padding-top:8px;border-top:2px dashed var(--line);font-weight:700;color:var(--teal)}
+.var{font-size:.8rem;font-weight:700}
+.var.over{color:#b0123f}
+.var.under,.var.on{color:var(--teal)}
+.show{border:2px solid var(--teal);border-radius:12px;padding:10px 12px;margin:8px 0}
+.show h4{margin:0 0 4px;display:flex;justify-content:space-between;gap:8px}
+.show div{white-space:pre-wrap}
+.sticky{background:var(--yel);color:#2b1b3d;border-radius:4px;padding:8px 10px;margin:6px 0;box-shadow:2px 3px 0 rgba(0,0,0,.15);transform:rotate(-1deg)}
+.chg{font:800 1.4rem "Baloo 2",sans-serif;background:var(--pink);color:#fff;border-radius:14px;padding:18px;margin-top:10px}
+.q{margin:12px 0}
+.q p{margin:0 0 4px}
+.q button{display:block;width:100%;text-align:left;margin:4px 0;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:6px 10px;font:inherit;cursor:pointer}
+.q button.ok{border-color:#1a9c5a;background:#d8f5e4;color:#12432a}
+.q button.no{border-color:#b0123f;background:#fbdce5;color:#5a0a20}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,160%);opacity:0;background:#2b1b3d;color:#fff;border-radius:12px;padding:10px 16px;max-width:90vw;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:.25s;pointer-events:none;z-index:10}
+.toast.on{transform:translate(-50%,0);opacity:1}
+.foot{display:flex;justify-content:space-between;gap:8px;margin:16px 0}
+ul,ol{padding-left:1.3em}
+.fw-card{padding:12px 16px}
+.fw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.fw-head .b{padding:5px 12px;font-size:.85rem}
+.fw-wrap{overflow-x:auto;margin-top:6px}
+.fw{display:block;width:100%;min-width:620px;height:auto;margin:0 auto;font-family:Nunito,system-ui,sans-serif}
+.fw text{fill:var(--ink);font-size:14px;font-weight:700;text-anchor:middle;pointer-events:none;transition:fill .35s}
+.fw text.sm{font-size:11px;font-weight:400;fill:var(--mut)}
+.fw text.t11{font-size:12px}
+.fw text.zl{text-anchor:start;font-size:12px;letter-spacing:.08em;fill:var(--teal)}
+.fw-n{cursor:pointer;transition:opacity .35s;transform-box:fill-box;transform-origin:center}
+.fw-n:focus{outline:none}
+.fw-n .s{fill:var(--card);stroke:var(--teal);stroke-width:2.5;transition:fill .35s,stroke .35s}
+.fw-n .ln{stroke:var(--line);stroke-width:1.5}
+.fw-n:hover .s,.fw-n:focus-visible .s{stroke:var(--pink);stroke-width:3.5}
+.fw-n.on{animation:pop .6s ease}
+.fw-n.on .s{fill:var(--pink);stroke:var(--pink);filter:drop-shadow(0 0 7px rgba(224,69,123,.65))}
+.fw-n.on text{fill:#fff}
+.fw-n.on text.out{fill:var(--pink)}
+.fw-n.on .ln{stroke:rgba(255,255,255,.6)}
+#fw-team.on .s{fill:rgba(224,69,123,.12)}
+#fw-team.on text{fill:var(--pink)}
+.chip circle{stroke:var(--card);stroke-width:3;transition:stroke .35s}
+.chip text{fill:#fff;font-size:12px}
+.chip.on circle{stroke:var(--yel);stroke-width:4;filter:drop-shadow(0 0 5px rgba(255,201,60,.9))}
+.fw text.nm{font-size:10.5px;fill:var(--mut)}
+.fw-a{transition:opacity .35s}
+.fw-a path{fill:none;stroke:var(--line);stroke-width:3;marker-end:url(#ah);transition:stroke .35s}
+#fw-a6 path{marker-start:url(#ah)}
+.fw-a.on path{stroke:var(--pink);marker-end:url(#ahOn);stroke-dasharray:9 6;animation:flow .7s linear infinite}
+#fw-a6.on path{marker-start:url(#ahOn)}
+.fw.flowall .fw-a path{stroke:var(--teal);marker-end:url(#ahT);stroke-dasharray:9 6;animation:flow .9s linear infinite}
+.fw.flowall #fw-a6 path{marker-start:url(#ahT)}
+.fw-z rect{fill:rgba(18,125,121,.04);stroke:var(--teal);stroke-width:2;stroke-dasharray:7 6;transition:.35s}
+.fw-z{transition:opacity .35s}
+.fw-z.on rect{fill:rgba(224,69,123,.05);stroke:var(--pink)}
+.fw-z.on text.zl{fill:var(--pink)}
+#fw-ring{fill:none;stroke:var(--pink);stroke-width:3;stroke-dasharray:4 10;opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .35s}
+#fw-ring.on{opacity:1;animation:spin 7s linear infinite}
+.fw.has-on .fw-n:not(.on),.fw.has-on .fw-a:not(.on),.fw.has-on .fw-z:not(.on){opacity:.3}
+.fw-cap{margin:8px 0 2px;padding:8px 12px;border-radius:10px;background:var(--bg);min-height:2.6em}
+@keyframes flow{to{stroke-dashoffset:-15}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fw.paused *{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.fw *{animation:none!important}}
+</style></head><body>
+<main>
+<div class="hero">
+<h1>Plan a Birthday Party, the Scrum Way</h1>
+<p>Your team has about <b><span id="totmin">65</span> minutes</b> and a budget of <b>S$3,000</b> to plan a 30th birthday party in Singapore for about 30 guests. You won't plan it all perfectly up front. You'll plan a little, show it, get feedback and adapt. That is Scrum.</p>
+<div class="map">
+<div><b>3 accountabilities</b>Product Owner, Scrum Master, Developers</div>
+<div><b>5 events</b>The Sprint, which contains Sprint Planning, Daily Scrum, Sprint Review and Sprint Retrospective</div>
+<div><b>3 artifacts + commitments</b>Product Backlog (Product Goal), Sprint Backlog (Sprint Goal), Increment (Definition of Done)</div>
+</div>
+<p><b>How to use this page:</b> one person shares their screen and does the clicking; everyone talks. Go through the steps in order. Each step lights up its part of the Scrum framework map, tells you who leads it, and gives you a timer and a tool to fill in. Your work is saved automatically in this browser.</p>
+</div>
+<div class="nav" id="nav" role="tablist"></div>
+<section class="card fw-card" aria-label="Scrum framework map">
+<div class="fw-head"><h3 style="margin:0">Where are we in Scrum?</h3><div class="row"><button class="b alt" id="fwplay">Play the Scrum cycle</button><button class="b" id="fwpause" style="display:none">Pause</button><button class="b ghost" id="fwtog">Hide diagram</button></div></div>
+<div id="fwbody"><div class="fw-wrap" id="fwwrap"></div><p class="fw-cap" id="fwcap" aria-live="polite"></p><p class="say" style="margin:0;font-size:.85rem">Hover over any part for a definition. Click it to jump to that step.</p></div>
+</section>
+<div id="step"></div>
+<div class="foot"><button class="b" id="prev">Back</button><button class="b ghost" id="reset">Start over</button><button class="b alt" id="next">Next step</button></div>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+var KEY="scrumPartyGuide.v4",BUDGET=3000;
+var S=[
+{n:"Team",m:3,k:"Accountabilities",lead:"all",h:"Form your Scrum Team",w:"roles",b:"<p>Scrum has three <b>accountabilities</b> (roles). Type your names, one per line. Click <b>Shuffle roles</b> to pick at random, or put your chosen Product Owner first and Scrum Master second and click <b>Assign in this order</b>.</p><ul><li><b>Product Owner (PO)</b>: represents the birthday person. Decides what is most valuable and orders the Product Backlog. One person, not a committee.</li><li><b>Scrum Master (SM)</b>: helps the team use Scrum well, keeps each event within its timebox, and helps remove blockers. A coach, not a boss.</li><li><b>Developers</b>: everyone else. They do the work and decide how much fits in a Sprint and how to do it. In Scrum, \"Developer\" means anyone doing the work, not only programmers.</li></ul><div class='tip'>Your Instructor/Classmate plays the <b>birthday person</b>: the customer and main stakeholder. They are not part of your Scrum Team.</div>"},
+{n:"Backlog",m:6,k:"Artifact: Product Backlog",lead:"po",h:"Build the Product Backlog",w:"backlog",hint:"Click an item name or its points to edit. Product Owner: use &#9650; &#9660; to put the most valuable items at the top.",b:"<p>First, the Product Owner writes the <b>Product Goal</b>: the big outcome you are aiming for.</p><p>Then look at the <b>Product Backlog</b>: an ordered list of everything that <i>might</i> be needed. It is never final. The starter items are just a starting point.</p><ol><li><b>Everyone:</b> suggest missing items (guest list? transport? return gifts?). The PO decides where they go.</li><li><b>Developers:</b> check the points and change any you disagree with.</li><li><b>Product Owner:</b> order the list. Most valuable at the top.</li></ol><div class='tip'>Story points are a rough size (1 = tiny, 8 = big), not hours. They are not part of the official Scrum Guide, but many teams use them. The Developers own the estimates, because they do the work.</div>"},
+{n:"Done",m:4,k:"Commitment: Definition of Done",lead:"team",h:"Agree on the Definition of Done",w:"dod",b:"<p>The <b>Definition of Done</b> is <b>one shared checklist that applies to every item</b>. It is your team's quality standard. If an item doesn't meet it, it isn't Done and can't be shown at the Sprint Review.</p><div class='cols two'><div class='col'><h3>Definition of Done</h3><p style='margin-top:0'>The <b>same for every</b> item. Set by the whole Scrum Team, now.</p><p class='say'>\"Decision written down with names, dates and numbers.\"</p></div><div class='col'><h3>Acceptance criteria</h3><p style='margin-top:0'><b>Different for each</b> item. Agreed with the Product Owner at Sprint Planning (step 4).</p><p class='say'>Venue: \"Fits 30 guests. Near an MRT station.\"</p></div></div><p>An item is finished only when it meets <b>both</b>: its own acceptance criteria <i>and</i> the Definition of Done. Edit the shared checklist below. Keep it short: 3 to 5 conditions that make sense for any item.</p><div class='tip'></div>"},
+{n:"Plan",m:12,k:"Event: Sprint Planning",lead:"team",h:"Sprint Planning",w:"plan",hint:"Developers: move items from the <b>top</b> of the Product Backlog into the Sprint Backlog with &#9654;. Use &#9664; to send one back.",b:"<p>Sprint Planning <b>starts the Sprint</b>. Your Sprint is one simulated week (the next few steps). Work through these together:</p><ol><li><b>Why is this Sprint valuable?</b> The PO proposes and the team agrees on a <b>Sprint Goal</b>. Write it first.</li><li><b>What can we get Done?</b> Developers pull items from the top of the Product Backlog into the Sprint Backlog. The Developers decide how much fits; the PO answers questions.</li><li><b>What does good look like?</b> For each Sprint item, the PO and Developers agree 2 or 3 <b>acceptance criteria</b>. Click <b>Suggest</b> for ideas, then edit them to fit.</li><li><b>How will we do it?</b> Developers agree on first steps and who starts where.</li><li><b>What will it cost?</b> Give each Sprint Backlog item a <b>planned cost</b> in S$. It's a forecast, not a promise: during the Sprint you'll compare it with what things actually cost.</li></ol><div class='tip'>About 12 to 16 points is realistic for this Sprint. Example: venue 5 + food 5 + budget 3 = 13. Write the Sprint Goal as an outcome, not a task list: <span class='say'>\"The birthday person can approve a venue, a menu and a budget.\"</span> Once the Sprint starts, the Product Backlog is locked.</div>"},
+{n:"Build",m:12,k:"The Sprint: doing the work",lead:"dev",h:"Build the Increment",w:"sprint",hint:"Finish items before starting new ones. Two things Done beat five things half done.",b:"<p>Time to do the work. For each item, the Developers make a <b>real decision</b> and write it on the card: a venue name, capacity and price; a menu; a cake; a guest list.</p><ol><li>Click <b>Start</b> to move an item to In progress, and pick who is on it. Developers choose their own work.</li><li>Write the <b>decision</b> and its <b>actual cost in S$</b>. The card compares it with the planned cost, and the budget panel shows whether you're still on track.</li><li>Tick the item's own <b>acceptance criteria</b> and every <b>Definition of Done</b> condition, then move it to <b>Done</b>.</li></ol><ul><li><b>Product Owner:</b> answer questions (<span class='say'>\"Do we need halal options?\"</span>). Don't hand out tasks.</li><li><b>Scrum Master:</b> watch the timebox and help clear blockers.</li></ul><div class='tip'>The Product Backlog is <b>locked</b> during the Sprint so you can focus on the Sprint Backlog. Got a new idea? Tell the Product Owner. (In real Scrum the Product Owner can update the Product Backlog at any time; we lock it here to keep the game focused.)</div>"},
+{n:"Daily",m:3,k:"Event: Daily Scrum",lead:"dev",h:"Daily Scrum",w:"sprint",hint:"Update the board so it shows the truth: who is on what, and is anything stuck?",b:"<p>Pause the work for a quick <b>Daily Scrum</b> (15 minutes in real Scrum, 3 here). It is the Developers' meeting: check progress toward the <b>Sprint Goal</b> and adjust the plan.</p><p>An easy format. Each Developer answers:</p><ol><li>What did I do that helped the Sprint Goal? <span class='say'>\"We shortlisted two venues.\"</span></li><li>What will I do next? <span class='say'>\"Compare their prices.\"</span></li><li>Is anything in our way? <span class='say'>\"We don't know the final guest count.\"</span></li></ol><p>The Scrum Master makes sure it happens and stays short. It is not a status report to a manager.</p><div class='tip'>The three questions are a popular format, not a rule. What matters: are we on track for the Sprint Goal, and what do we change?</div>"},
+{n:"Change",m:6,k:"Inspect and adapt",lead:"po",h:"The customer has news!",w:"change",hint:"To swap something into the Sprint, move it to To do and send an item of a similar size back to the Product Backlog.",b:"<p>Draw a change card, or type the change your Stakeholder/client  announced. Don't panic and don't throw away your plan. Adapt.</p><p><b>How Scrum handles change during a Sprint:</b></p><ol><li>The <b>Product Owner</b> takes the request and decides how important it is.</li><li>It becomes a new or updated item in the <b>Product Backlog</b>. The Product Backlog is unlocked for this step so the PO can add it.</li><li>If it is urgent and the Sprint Goal is still reachable, the PO and Developers can agree to swap it into the Sprint Backlog.</li><li>The Sprint Goal stays the same. Only if the change makes the goal pointless can the Product Owner cancel the Sprint (this is rare).</li></ol><p>Use the rest of this timebox to adapt and finish what you can.</p>"},
+{n:"Review",m:6,k:"Event: Sprint Review",lead:"po",h:"Sprint Review",w:"review",b:"<p>The work time is over. Invite the <b>stakeholders</b>: your Client as the birthday person (or a visiting team). This is a working conversation, not a presentation or a test.</p><ol><li><b>Product Owner:</b> say what was Done and what was not.</li><li><b>Developers:</b> walk through the <b>Increment</b> below: the decisions you made, and what they cost compared with the plan.</li><li><b>Everyone:</b> discuss the feedback and what to do next. Listen first and ask questions to understand.</li><li>Add feedback to the Product Backlog. Send unfinished Sprint items back to the Product Backlog.</li></ol><p class='say'>\"The venue looks good, but I don't like the cake design.\"</p>"},
+{n:"Retro",m:5,k:"Event: Sprint Retrospective",lead:"sm",h:"Sprint Retrospective",w:"retro",b:"<p>The stakeholders leave. Only the <b>Scrum Team</b> stays (the Product Owner stays too). The Scrum Master facilitates.</p><p>Look at <i>how</i> you worked, not the party itself: communication, roles, the Definition of Done, your tools, and how well you kept to each timebox (see the timebox check below). Add sticky notes, then pick <b>one</b> improvement to try in the next Sprint.</p><p>This is the last event of the Sprint. When it ends, Sprint 1 is over.</p>"},
+{n:"Refine",m:3,k:"Activity: Backlog Refinement",lead:"po",h:"Refine the backlog for Sprint 2",w:"refine",hint:"Add feedback as new items. Product Owner: re-order with &#9650; &#9660;.",b:"<p><b>Backlog Refinement</b> is not a Scrum event. It is an ongoing activity that real teams do throughout the Sprint. Here you get the Product Backlog ready for Sprint 2.</p><ol><li>Add or update items based on what you learned: children's activities, halal or vegetarian food, a larger venue, a new cake design.</li><li><b>Developers:</b> split big items (8+ points) into smaller ones and update the points.</li><li><b>Product Owner:</b> re-order the list. The top items should be clear enough to start at the next Sprint Planning.</li></ol>"},
+{n:"Debrief",m:5,k:"Reflection",lead:"all",h:"Debrief",w:"final",b:"<p>Discuss together:</p><div class='chg' style='background:#2b1b3d'>Why didn't we try to plan the entire party perfectly at the beginning?</div><ul><li>Where did you see <b>Transparency</b> (everyone could see the work), <b>Inspection</b> (checking progress and results) and <b>Adaptation</b> (changing the plan)?</li><li>Which accountability felt hardest? Why?</li><li>What would you do differently in Sprint 2?</li></ul><p><b>Plan, Build, Get feedback, Adapt, Improve, Repeat.</b></p><p>Then copy your team summary into the class chat and try the quick check below.</p>"}
+];
+var CH=["10 children will also attend the party.","The budget has been cut from S$3,000 to S$2,400.","Afternoon thunderstorms are forecast. An outdoor venue may not work.","The birthday person now wants live music.","The birthday person wants a chocolate cake instead of vanilla.","Several guests need halal food.","Three guests have nut allergies.","Noise rules mean the party must end by 10:30 pm."];
+var START=[["Select venue",5],["Plan food",5],["Arrange birthday cake",3],["Send invitations",3],["Plan decorations",3],["Arrange music",3],["Plan activities",5],["Collect quotes and track spending",3],["Party schedule",2],["Photography",3]];
+var DOD=["Decision written down with names, dates and numbers","Actual cost recorded","Checked by another team member"];
+var ACS=[[/venue|room|place/i,["Fits at least 30 guests","Free on the party date and time","Easy to reach by MRT or bus"]],[/food|menu|cater|drink/i,["Enough for 30 guests","Halal and vegetarian options included","Price per person is known"]],[/cake/i,["Flavour approved by the Product Owner","Serves 30 people","Pickup or delivery time confirmed"]],[/invit|guest/i,["Sent to all 30 guests","Includes date, time, venue and RSVP date","RSVPs are being tracked"]],[/decor|theme/i,["Matches the party theme","Can be set up in under 1 hour","Allowed by the venue"]],[/music|dj|band|song/i,["Playlist or performer confirmed","Sound equipment arranged","Fits the venue's noise rules"]],[/activ|game|fun/i,["Suits all guests, including any children","Materials and host confirmed","Fits into the party schedule"]],[/budget|cost|quote|spend/i,["Quotes saved for the main items","Spending sheet shared with the team","Updated after each purchase"]],[/schedule|time/i,["Start and end times set","Food and cake times included","Shared with the Product Owner"]],[/photo|video/i,["Photographer or camera confirmed","Key moments listed (cake, group photo)","Plan to share photos with guests"]]];
+var HINTS=[[/venue|room|place/i,"e.g. Function room at a Tanjong Pagar restaurant, fits 40, Sat 7 to 11 pm"],[/food|menu|cater|drink/i,"e.g. Halal buffet from a local caterer, S$22 per person, with vegetarian options"],[/cake/i,"e.g. 2 kg chocolate cake from a Tiong Bahru bakery, collected Sat 5 pm"],[/invit|guest/i,"e.g. WhatsApp e-invite to 30 guests, RSVP by Friday"],[/decor|theme/i,"e.g. Balloon arch and fairy lights, gold and white theme"],[/music|dj|band|song/i,"e.g. Shared Spotify playlist and a rented party speaker"],[/activ|game|fun/i,"e.g. Karaoke corner and a photo quiz about the birthday person"],[/budget|cost|quote|spend/i,"e.g. Quotes saved for venue, food and cake; all spending logged in a shared sheet"],[/schedule|time|plan/i,"e.g. 7 pm arrive, 7:30 food, 9 pm cake, 10:30 pm end"],[/photo|video/i,"e.g. A friend with a camera plus an instant-photo corner"]];
+var Q=[
+["Who decides the order of the Product Backlog?",["The Product Owner","The Scrum Master","The customer"],0,"The Product Owner is accountable for ordering the Product Backlog. Stakeholders influence it; the PO decides."],
+["Who decides how much work goes into the Sprint?",["The Product Owner","The Developers","The Scrum Master"],1,"The Developers choose how much they can get Done. The PO explains what is most valuable."],
+["A new customer request arrives in the middle of the Sprint. Where does it go first?",["Straight into the Sprint Backlog","To the Product Owner, into the Product Backlog","It waits until the project ends"],1,"The PO decides its priority. It only enters the current Sprint if the Sprint Goal is not put at risk."],
+["An item is 90% finished when the Sprint ends. Is it part of the Increment?",["Yes, it is almost done","No, it goes back to the Product Backlog"],1,"Only work that meets the Definition of Done is part of the Increment."],
+["What is the Daily Scrum for?",["Reporting status to the Scrum Master","Developers checking progress toward the Sprint Goal and adapting the plan","Assigning tasks to people"],1,"It is the Developers' event for inspecting progress and adapting the plan."],
+["Is the Definition of Done different for each backlog item?",["Yes, every item has its own Definition of Done","No, it is one shared standard for every item. Item-specific conditions are acceptance criteria."],1,"The Definition of Done is the quality bar for the whole Increment. Acceptance criteria describe what one specific item must do."],
+["Who takes part in the Sprint Retrospective?",["The Scrum Team only","The Scrum Team and the customer","Only the Scrum Master"],0,"The Retrospective is for the Scrum Team: Product Owner, Scrum Master and Developers."]
+];
+var HL=[
+["team","dev","sm","po"],
+["pg","pb","po"],
+["dod","inc"],
+["sprint","pb","a1","plan","a2","sg","sb"],
+["sprint","sg","sb","a3","team","dev","a4","dod","inc"],
+["sprint","daily","ring","team","dev","sg"],
+["sprint","stake","po","pb","sg"],
+["sprint","inc","a5","rev","a6","stake","a9","pb"],
+["sprint","a7","retro","a8","team","dev","sm","po"],
+["pb","ref","pg","po","dev"],
+"all"];
+var CAP=[
+"One Product Owner, one Scrum Master and the Developers. A small, self-managing team with no sub-teams or hierarchy.",
+"It all starts with the Product Goal and an ordered Product Backlog. The Product Owner is accountable for both.",
+"The Definition of Done turns finished work into a usable Increment. If it's not Done, it's not part of the Increment.",
+"Sprint Planning starts the Sprint: the team agrees on a Sprint Goal and pulls items into the Sprint Backlog.",
+"The Developers turn Sprint Backlog items into a Done Increment, guided by the Sprint Goal.",
+"Every day, the Developers inspect progress toward the Sprint Goal and adapt their plan.",
+"Stakeholder news goes to the Product Owner and into the Product Backlog. The Sprint Goal stays the same.",
+"The Increment is inspected with the stakeholders. Their feedback flows back into the Product Backlog.",
+"The Scrum Team inspects how it worked. Improvements feed into the next Sprint Planning.",
+"The Product Backlog is refined continuously: items are added, split, sized and re-ordered.",
+"The whole loop: plan, build, inspect, adapt, improve. Then repeat with Sprint 2."];
+var CYCLE=[1,3,4,5,6,7,8,9],playT=null,playK=-1;
+function fwSvg(){
+ var n=function(id,v,tip,inner,cls){return'<g class="fw-n'+(cls?" "+cls:"")+'" id="fw-'+id+'" data-a="go" data-v="'+v+'" tabindex="0" role="button" aria-label="'+tip+'"><title>'+tip+'</title>'+inner+'</g>'},
+ a=function(id,d){return'<g class="fw-a" id="fw-'+id+'"><path d="'+d+'"/></g>'},
+ t=function(x,y,s,c,id){return'<text x="'+x+'" y="'+y+'"'+(c?' class="'+c+'"':"")+(id?' id="'+id+'"':"")+'>'+s+'</text>'},
+ r=function(x,y,w,h,rx){return'<rect class="s" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+rx+'"/>'},
+ chip=function(x,y,fill,l){return'<circle cx="'+x+'" cy="'+y+'" r="18" style="fill:'+fill+'"/>'+t(x,y+4,l)},
+ mk=function(id,c){return'<marker id="'+id+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:'+c+'"/></marker>'},
+ rows="";for(var y=128;y<=288;y+=20)rows+='<line class="ln" x1="52" y1="'+y+'" x2="148" y2="'+y+'"/>';
+ return'<svg class="fw has-on" id="fwsvg" viewBox="0 0 1060 448" role="group" aria-label="Scrum framework diagram"><defs>'+mk("ah","var(--line)")+mk("ahOn","var(--pink)")+mk("ahT","var(--teal)")+'</defs>'
+ +'<g class="fw-z" id="fw-sprint"><rect x="185" y="60" width="745" height="350" rx="26"/>'+t(205,396,"THE SPRINT: THE CONTAINER FOR ALL EVENTS","zl")+'</g>'
+ +a("a1","M160 215H201")+a("a2","M315 215H336")+a("a3","M460 215H501")+a("a4","M675 215H714")+a("a5","M790 215H811")+a("a6","M919 215H944")
+ +a("a7","M865 188V96H614")+a("a8","M438 96H260V186")+a("a9","M865 242V426H100V346")
+ +t(350,88,"improvements","sm")+t(520,443,"feedback becomes new Product Backlog items","sm")
+ +n("pg",1,"Product Goal: the long-term outcome the Scrum Team is working toward",r(40,48,120,32,16)+t(100,69,"Product Goal"))
+ +n("pb",1,"Product Backlog: an ordered list of everything that might be needed, owned by the Product Owner",r(40,90,120,250,12)+t(100,114,"Product Backlog")+rows)
+ +n("ref",9,"Backlog Refinement: an ongoing activity of adding detail, sizing and ordering items",r(50,300,100,32,8)+t(100,321,"&#8635; Refinement","t11"))
+ +n("plan",3,"Sprint Planning: starts the Sprint. Why, what and how",r(205,190,110,50,12)+t(260,211,"Sprint")+t(260,228,"Planning"))
+ +n("sg",3,"Sprint Goal: the single objective for the Sprint",r(340,140,120,30,15)+t(400,160,"Sprint Goal"))
+ +n("sb",3,"Sprint Backlog: the Sprint Goal, the selected items and the plan to deliver them",r(340,178,120,74,8)+'<line class="ln" x1="380" y1="178" x2="380" y2="252"/><line class="ln" x1="420" y1="178" x2="420" y2="252"/><line class="ln" x1="340" y1="203" x2="460" y2="203"/><line class="ln" x1="340" y1="228" x2="460" y2="228"/>'+t(400,272,"Sprint Backlog","out"))
+ +'<circle id="fw-ring" cx="590" cy="215" r="97"/>'
+ +n("team",0,"Scrum Team: Product Owner, Scrum Master and Developers",'<circle class="s" cx="590" cy="215" r="85"/>'+t(590,293,"Scrum Team"))
+ +n("dev",0,"Developers: do the work and decide how much fits in the Sprint",chip(545,180,"#e0692f","Dev")+chip(590,168,"#e0692f","Dev")+chip(635,180,"#e0692f","Dev"),"chip")
+ +n("sm",0,"Scrum Master: coaches the team and removes blockers",chip(565,232,"#127d79","SM")+t(565,266,"","nm","fw-smn"),"chip")
+ +n("po",0,"Product Owner: maximizes value and orders the Product Backlog",chip(615,232,"#5c9a3e","PO")+t(615,266,"","nm","fw-pon"),"chip")
+ +n("daily",5,"Daily Scrum: 15 minutes for Developers to inspect progress toward the Sprint Goal",'<circle class="s" cx="674" cy="130" r="34"/>'+t(674,127,"Daily")+t(674,143,"Scrum"))
+ +n("dod",2,"Definition of Done: the quality bar every Increment must meet",r(690,145,120,28,14)+t(750,164,"Definition of Done","t11"))
+ +n("inc",2,"Increment: the sum of all Done work, usable and ready to show",'<path class="s" d="M722 192L734 182H790L778 192Z"/><path class="s" d="M778 192L790 182V228L778 238Z"/>'+r(722,192,56,46,2)+t(750,262,"Increment","out"))
+ +n("rev",7,"Sprint Review: inspect the Increment with stakeholders and adapt the Product Backlog",r(815,190,100,50,12)+t(865,211,"Sprint")+t(865,228,"Review"))
+ +n("stake",7,"Stakeholders: the customer and others outside the Scrum Team (here, the birthday person)",r(948,190,104,50,25)+t(1000,211,"Stakeholders")+t(1000,228,"birthday person","sm"))
+ +n("retro",8,"Sprint Retrospective: the Scrum Team plans how to improve",r(440,78,170,36,12)+t(525,101,"Sprint Retrospective"))
+ +'</svg>'}
+function hl(i,cycle){var svg=$("fwsvg");if(!svg)return;var set=HL[i],all=set=="all",r=st.roles;
+ svg.classList.toggle("has-on",!all);svg.classList.toggle("flowall",all);
+ [].forEach.call(svg.querySelectorAll(".fw-n,.fw-a,.fw-z,#fw-ring"),function(e){e.classList.toggle("on",!all&&set.indexOf(e.id.slice(3))>=0)});
+ $("fw-pon").textContent=r?r.po.slice(0,10):"";$("fw-smn").textContent=r?r.sm.slice(0,10):"";
+ $("fwcap").innerHTML=(cycle?"<b>Scrum cycle:</b> ":"<b>You are here:</b> ")+"Step "+(i+1)+", "+S[i].h+". "+CAP[i]}
+function fwBtns(){var on=playK>=0;$("fwplay").textContent=on?"Stop":"Play the Scrum cycle";$("fwpause").style.display=on?"":"none";$("fwpause").textContent=playT?"Pause":"Resume";$("fwsvg").classList.toggle("paused",on&&!playT)}
+function tickCycle(){if(++playK>=CYCLE.length)return stopPlay();hl(CYCLE[playK],1)}
+function endPlay(){clearInterval(playT);playT=null;playK=-1;fwBtns()}
+function stopPlay(){endPlay();hl(st.cur)}
+function play(){if(playK>=0)return stopPlay();playK=0;hl(CYCLE[0],1);playT=setInterval(tickCycle,1800);fwBtns()}
+function pausePlay(){if(playK<0)return;if(playT){clearInterval(playT);playT=null;$("fwcap").innerHTML=$("fwcap").innerHTML.replace("Scrum cycle:","Scrum cycle (paused):")}else{hl(CYCLE[playK],1);playT=setInterval(tickCycle,1800)}fwBtns()}
+function fwHide(h){$("fwbody").style.display=h?"none":"";$("fwtog").textContent=h?"Show diagram":"Hide diagram"}
+
+/* Item columns: 0 Product Backlog, 1 To do, 3 In progress, 2 Done. 1 and 3 together are the Sprint Backlog. */
+function mkItem(t,p){return{t:t,p:p,c:0,note:"",plan:0,cost:0,who:"",chk:{},ac:[],acChk:{}}}
+function fresh(){return{cur:0,visited:{0:1},names:"",roles:null,pgoal:"",goal:"",chg:"",imp:"",budget:BUDGET,fwHide:false,items:START.map(function(a){return mkItem(a[0],a[1])}),dod:DOD.slice(),retro:{Continue:[],Stop:[],Start:[]},quiz:{},over:{}}}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&s.items){var f=fresh();for(var k in f)if(!(k in s))s[k]=f[k];s.items.forEach(function(it){var m=mkItem(it.t,it.p);for(var k in m)if(!(k in it))it[k]=m[k]});if(!(s.cur>=0&&s.cur<S.length))s.cur=0;return s}}catch(e){}return null}
+var st=load()||fresh(),left=S[st.cur].m*60,tid=null,ac=null;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(s){var a=Math.abs(s);return(s<0?"&minus;":"")+Math.floor(a/60)+":"+("0"+a%60).slice(-2)}
+function fmtT(s){return fmt(s).replace("&minus;","-")}
+function inCol(c){return st.items.filter(function(i){return i.c==c})}
+function sprintAll(){return st.items.filter(function(i){return i.c==1||i.c==3})}
+function pts(list){return list.reduce(function(a,i){return a+i.p},0)}
+function cost(list){return list.reduce(function(a,i){return a+(+i.cost||0)},0)}
+function planned(list){return list.reduce(function(a,i){return a+(+i.plan||0)},0)}
+function inSprint(){return st.items.filter(function(i){return i.c!=0})}
+function forecast(list){return list.reduce(function(a,i){return a+(i.cost>0?+i.cost:+i.plan||0)},0)}
+function sgd(n){return"S$"+Math.round(n||0).toLocaleString("en-SG")}
+function varOf(it){if(!(it.cost>0))return{t:"",c:""};if(!(it.plan>0))return{t:"no plan",c:""};var d=it.cost-it.plan;return d>0?{t:sgd(d)+" over plan",c:"over"}:d<0?{t:sgd(-d)+" under plan",c:"under"}:{t:"on plan",c:"on"}}
+function varSpan(it,i){var v=varOf(it);return'<span class="var '+v.c+'" id="var'+i+'">'+v.t+'</span>'}
+function planIn(it,i){return'<label class="pl">Plan S$ <input class="pi" style="width:80px" type="number" min="0" step="10" data-i="plan" data-v="'+i+'" value="'+(it.plan||"")+'" aria-label="Planned cost for '+esc(it.t)+'"></label>'}
+function dodLeft(it){return st.dod.filter(function(d){return!(it.chk&&it.chk[d])}).length}
+function acLeft(it){return(it.ac||[]).filter(function(a){return!(it.acChk&&it.acChk[a])}).length}
+function ready(it){return!dodLeft(it)&&!acLeft(it)}
+function acSuggest(t){for(var k=0;k<ACS.length;k++)if(ACS[k][0].test(t))return ACS[k][1];return["The Product Owner agrees it meets the need","Details are specific enough to act on"]}
+function acEditor(it,i){return'<div class="acs"><span class="acl">Acceptance criteria</span>'+(it.ac.length?it.ac.map(function(a,j){return'<span class="acc">'+esc(a)+'<button data-a="acdel" data-v="'+i+'" data-d="'+j+'" aria-label="Remove criterion" title="Remove">&#10005;</button></span>'}).join(""):'<span class="say" style="font-size:.85rem">None yet.</span>')
+ +'<div class="row" style="margin-top:4px"><input class="acin" id="ac'+i+'" data-ac="'+i+'" placeholder="Add a criterion, press Enter" aria-label="New acceptance criterion for '+esc(it.t)+'"><button class="sb2 ghost" data-a="acadd" data-v="'+i+'">Add</button><button class="sb2" data-a="acsug" data-v="'+i+'">Suggest</button></div></div>'}
+function acAdd(i){var e=$("ac"+i),v=e.value.trim(),it=st.items[i];if(!v)return;if(it.ac.indexOf(v)<0)it.ac.push(v);save();draw(true);var n=$("ac"+i);if(n)n.focus({preventScroll:true})}
+function acSug(i){var it=st.items[i],n=0;acSuggest(it.t).forEach(function(a){if(it.ac.indexOf(a)<0){it.ac.push(a);n++}});save();draw(true);toast(n?"Added "+n+" suggested criteria. Product Owner: edit or remove any that don't fit.":"Suggestions already added.")}
+function hintFor(t){for(var k=0;k<HINTS.length;k++)if(HINTS[k][0].test(t))return HINTS[k][1];return"What did you decide? Include names, numbers and details."}
+function nItems(n){return n+(n==1?" item":" items")}
+function toast(m){var e=$("toast");e.textContent=m;e.className="toast on";clearTimeout(toast.t);toast.t=setTimeout(function(){e.className="toast"},4000)}
+function beep(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();[0,.3,.6].forEach(function(d){var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.value=880;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.start(t);o.stop(t+.25)})}catch(e){}}
+function stop(){if(tid){clearInterval(tid);tid=null}}
+function go(i){var run=!!tid;stop();if(playK>=0)endPlay();st.cur=Math.max(0,Math.min(S.length-1,i));st.visited[st.cur]=1;left=S[st.cur].m*60;save();draw();if(run)tog()}
+function who(l){var r=st.roles,nm={po:r?r.po:"",sm:r?r.sm:"",dev:r?r.devs.join(", "):""},lab={po:"Product Owner",sm:"Scrum Master",dev:"Developers",team:"Whole Scrum Team",all:"Everyone"};return lab[l]+(nm[l]?" ("+esc(nm[l])+")":"")}
+function nav(){var h="";S.forEach(function(s,i){var c=i==st.cur?"on":st.visited[i]&&i<st.cur?"done":"";if(i>=3&&i<=8)c+=" sp";h+='<button role="tab" class="'+c+'" data-a="go" data-v="'+i+'">'+(i+1)+". "+s.n+"</button>"});$("nav").innerHTML=h}
+
+function btn(a,i,d,sym,lab){return'<button aria-label="'+lab+'" title="'+lab+'" data-a="'+a+'" data-v="'+i+'" data-d="'+d+'">'+sym+'</button>'}
+function sb2(i,to,label,cls){return'<button class="sb2'+(cls?" "+cls:"")+'" data-a="to" data-v="'+i+'" data-d="'+to+'">'+label+'</button>'}
+function hintP(){var h=S[st.cur].hint;return h?'<p class="tip" style="margin-top:0">'+h+'</p>':""}
+function nameIn(it,i){return'<input class="it" value="'+esc(it.t)+'" data-i="t" data-v="'+i+'" aria-label="Item name">'}
+function ptsIn(it,i){return'<label class="pl">pts <input class="pi" type="number" min="1" max="40" value="'+it.p+'" data-i="p" data-v="'+i+'"></label>'}
+function addRow(){return'<div class="row" style="margin-top:10px"><input id="ni" placeholder="New backlog item, e.g. Return gifts" aria-label="New backlog item"><input id="np" type="number" min="1" max="40" value="3" style="max-width:80px;flex:0 0 80px" aria-label="Story points"><button class="b" data-a="addItem">Add item</button></div>'}
+function pbCol(o){var h='<div class="col"><h3>Product Backlog<span class="pts" id="tot0">'+pts(inCol(0))+' pts</span></h3>',rk=0;
+ st.items.forEach(function(it,i){if(it.c!=0)return;h+='<div class="item one"><span class="rk">'+(++rk)+'</span>'+nameIn(it,i)+ptsIn(it,i)+btn("ord",i,-1,"&#9650;","Move up")+btn("ord",i,1,"&#9660;","Move down")+(o.toSprint?btn("to",i,1,"&#9654;","Move to the Sprint Backlog"):"")+btn("del",i,0,"&#10005;","Remove item")+'</div>'});
+ return h+(rk?"":'<p class="say">Empty</p>')+(o.add?addRow():"")+'</div>'}
+function capTxt(){var p=pts(sprintAll());return p==0?"Pull items from the top of the Product Backlog.":p<12?p+" pts. Room for more? About 12 to 16 is realistic.":p<=16?p+" pts. Looks realistic for this Sprint.":p+" pts. That's a lot for one Sprint. Can you really get it all Done?"}
+function planView(){var h='<div class="card"><h3>Sprint Goal</h3><p class="say">Why is this Sprint valuable? By the end of this Sprint...</p><textarea rows="2" data-i="goal" aria-label="Sprint Goal">'+esc(st.goal)+'</textarea></div><div class="card">'+hintP()+'<div class="cols two">'+pbCol({toSprint:1,add:1})+'<div class="col"><h3>Sprint Backlog<span class="pts" id="totsb">'+pts(sprintAll())+' pts</span></h3>',n=0;
+ st.items.forEach(function(it,i){if(it.c!=1&&it.c!=3)return;n++;h+='<div class="item"><div class="ir">'+btn("to",i,0,"&#9664;","Back to the Product Backlog")+nameIn(it,i)+ptsIn(it,i)+planIn(it,i)+'</div>'+acEditor(it,i)+'</div>'});
+ return h+(n?"":'<p class="say">Empty</p>')+'<p class="cap'+(pts(sprintAll())>16?" warn":"")+'" id="cap">'+capTxt()+'</p><div class="pbud" id="pbud"></div></div></div></div>'}
+function totals(){var e=$("tot0");if(e)e.textContent=pts(inCol(0))+" pts";e=$("totsb");if(e)e.textContent=pts(sprintAll())+" pts";e=$("cap");if(e){e.textContent=capTxt();e.className="cap"+(pts(sprintAll())>16?" warn":"")}}
+function frozen(){var l=inCol(0);return'<details class="frozen"><summary><span class="lock">LOCKED</span>Product Backlog: '+nItems(l.length)+'. Frozen during the Sprint so you can focus. Click to view.</summary><ol>'+l.map(function(i){return'<li>'+esc(i.t)+' ('+i.p+' pts)</li>'}).join("")+'</ol></details>'}
+function budBar(){return'<div class="card bud" id="bud"><div class="row"><b>Party budget: planned vs actual</b><label class="pl">Budget S$ <input class="pi" style="width:90px" type="number" min="0" step="50" data-i="budget" value="'+st.budget+'" aria-label="Budget in Singapore dollars"></label></div>'
+ +'<div class="tiles"><div><span>Planned (Sprint Planning)</span><b id="bPlan"></b></div><div><span>Actual so far</span><b id="bAct"></b></div><div><span>Forecast total</span><b id="bFc"></b></div><div><span>Budget left after forecast</span><b id="bLeft"></b></div></div>'
+ +'<div class="bar"><i class="bp" id="barP"></i><i class="ba" id="barA"></i></div><div class="legend">Striped: planned. Solid: actual. Forecast = actual cost where known, planned cost for the rest.</div><p class="bmsg" id="bmsg"></p></div>'}
+function budUpd(){var b=st.budget||0,e=$("pbud");
+ if(e){var sb=sprintAll(),p=planned(sb),miss=sb.filter(function(i){return!(i.plan>0)}).length;e.classList.toggle("over",p>b);
+  e.textContent=sb.length?"Planned cost for this Sprint: "+sgd(p)+" of "+sgd(b)+(p>b?". That's over budget. What can you drop or make cheaper?":". "+sgd(b-p)+" left for later Sprints.")+(miss?" "+nItems(miss)+(miss==1?" still needs":" still need")+" a planned cost.":""):""}
+ e=$("bud");if(!e)return;var l=inSprint(),pl=planned(l),ac=cost(l),fc=forecast(l),costed=l.filter(function(i){return i.cost>0}),both=costed.filter(function(i){return i.plan>0}),drift=cost(both)-planned(both),over=fc>b,w=Math.max(b,fc,1);
+ e.classList.toggle("over",over);$("bPlan").textContent=sgd(pl);$("bAct").textContent=sgd(ac);$("bFc").textContent=sgd(fc);$("bLeft").textContent=(b-fc<0?"-":"")+sgd(Math.abs(b-fc));
+ $("barP").style.width=Math.min(100,pl/w*100)+"%";$("barA").style.width=Math.min(100,ac/w*100)+"%";
+ $("bmsg").textContent=over?"Forecast is over budget by "+sgd(fc-b)+". Product Owner: what can we drop or make cheaper?":drift>0?"Costs so far are running "+sgd(drift)+" over plan. Inspect and adapt: can later items cost less?":costed.length?"On track. Forecast is "+sgd(b-fc)+" under budget"+(drift<0?", and you're "+sgd(-drift)+" under plan so far.":"."):pl?"No actual costs yet. Enter them on the cards as you decide.":"No planned costs. Add them at Sprint Planning (step 4)."}
+function whoSel(it,i){var r=st.roles;if(!r||!r.devs.length)return"";return'<select data-i="who" data-v="'+i+'" aria-label="Who is working on this"><option value="">Who?</option>'+r.devs.map(function(d){return'<option'+(it.who==d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'}
+function card(it,i,o){var h='<div class="sc'+(it.c==3?" prog":it.c==2?" done":"")+'"><h4><span>'+esc(it.t)+'</span><span class="pts">'+it.p+' pts</span></h4>';
+ if(it.c==1)h+='<div class="ir">'+(o.back?planIn(it,i):'<span class="pl">Planned: '+(it.plan>0?sgd(it.plan):"none")+' &middot; '+(it.ac.length?it.ac.length+" acceptance criteria":"no acceptance criteria")+'</span>')+'</div>'+(o.back?acEditor(it,i):"")+'<div class="ir">'+whoSel(it,i)+'<span class="sp"></span>'+(o.back?sb2(i,0,"&#9664; Backlog","ghost"):"")+sb2(i,3,"Start &#9654;","alt")+'</div>';
+ if(it.c==3)h+='<div class="ir">'+whoSel(it,i)+'</div><textarea rows="3" data-i="note" data-v="'+i+'" aria-label="Decision for '+esc(it.t)+'" placeholder="'+esc(hintFor(it.t))+'">'+esc(it.note)+'</textarea><div class="ir"><span class="pl">Planned '+(it.plan>0?sgd(it.plan):"none")+'</span><label class="pl">Actual S$ <input class="pi" style="width:90px" type="number" min="0" step="10" data-i="cost" data-v="'+i+'" value="'+(it.cost||"")+'" aria-label="Actual cost for '+esc(it.t)+'"></label>'+varSpan(it,i)+'</div><div class="dodl"><b>Acceptance criteria</b> <span class="pl" style="display:inline">(this item only)</span>'+(it.ac.length?it.ac.map(function(a,j){return'<label class="chk"><input type="checkbox" data-a="acchk" data-v="'+i+'" data-d="'+j+'"'+(it.acChk&&it.acChk[a]?" checked":"")+'><span>'+esc(a)+'</span></label>'}).join(""):'<div class="say">None were agreed at Sprint Planning. Ask the Product Owner what "good" looks like.</div>')+'</div><div class="dodl"><b>Definition of Done</b> <span class="pl" style="display:inline">(every item)</span>'+st.dod.map(function(d,j){return'<label class="chk"><input type="checkbox" data-a="chk" data-v="'+i+'" data-d="'+j+'"'+(it.chk&&it.chk[d]?" checked":"")+'><span>'+esc(d)+'</span></label>'}).join("")+'</div><div class="ir"><span class="sp"></span>'+sb2(i,1,"&#9664; To do","ghost")+sb2(i,2,"Done &#9654;",ready(it)&&it.note.trim()?"alt":"")+'</div>';
+ if(it.c==2)h+='<div class="dec">'+(it.note?esc(it.note):"<i>No decision written.</i>")+'</div><div class="ir"><span class="okb">Meets its acceptance criteria and the Definition of Done</span></div><div class="ir"><span class="pl">Planned '+(it.plan>0?sgd(it.plan):"none")+'</span><span class="sp"></span><b>'+sgd(it.cost)+'</b></div><div class="ir"><span class="sp"></span>'+varSpan(it,i)+'</div><div class="ir">'+(it.who?'<span class="pl">by '+esc(it.who)+'</span>':"")+'<span class="sp"></span>'+sb2(i,3,"&#9664; Reopen","ghost")+'</div>';
+ return h+'</div>'}
+function sprintBoard(o){var h='<div class="card">'+hintP()+'<div class="cols">',empty=!sprintAll().length&&!inCol(2).length;
+ [[1,"To do"],[3,"In progress"],[2,"Done (Increment)"]].forEach(function(c){var l="";st.items.forEach(function(it,i){if(it.c==c[0])l+=card(it,i,o)});
+  h+='<div class="col"><h3>'+c[1]+'<span class="pts">'+pts(inCol(c[0]))+' pts</span></h3>'+(l||'<p class="say">'+(empty&&c[0]==1?"Nothing planned. Go back to Sprint Planning.":"Empty")+'</p>')+'</div>'});
+ return h+'</div></div>'}
+function reviewView(){var dn=inCol(2),un=sprintAll(),h=budBar()+'<div class="card"><h3>The Increment: what we show the birthday person</h3>';
+ h+=dn.length?dn.map(function(it,k){var v=varOf(it);return'<div class="show"><h4><span>'+esc(it.t)+'</span><span>'+sgd(it.cost)+'</span></h4><div>'+(it.note?esc(it.note):"<i>No decision written.</i>")+'</div>'+(it.ac.length?'<ul class="acdone">'+it.ac.map(function(a){return'<li>'+esc(a)+'</li>'}).join("")+'</ul>':"")+'<div class="ir"><span class="pl">Planned '+(it.plan>0?sgd(it.plan):"none")+'</span><span class="sp"></span><span class="var '+v.c+'">'+v.t+'</span></div></div>'}).join("")+'<p style="margin-bottom:0"><b>Total: '+pts(dn)+' pts. Planned '+sgd(planned(dn))+', actual '+sgd(cost(dn))+'</b>'+(function(){var d=cost(dn)-planned(dn);return d?' <span class="var '+(d>0?"over":"under")+'">('+sgd(Math.abs(d))+(d>0?" over":" under")+' plan)</span>':""})()+'</p>':'<p class="say">Nothing is Done, so there is no Increment to show. Talk honestly about what happened and why.</p>';
+ h+='</div>';
+ if(un.length)h+='<div class="card"><h3>Not Done</h3><p style="margin-top:0">These are not part of the Increment. Mention them, then send them back to the Product Backlog.</p><ul>'+un.map(function(i){return'<li>'+esc(i.t)+(i.c==3?" (was in progress)":"")+'</li>'}).join("")+'</ul><button class="b alt" data-a="ret">Return unfinished items to the Product Backlog</button></div>';
+ return h+'<div class="card"><p class="tip" style="margin-top:0">Add the birthday person\'s feedback as new Product Backlog items.</p>'+pbCol({add:1})+'</div>'}
+function mvTo(i,to){var it=st.items[i];
+ if(to==2){if(!it.note.trim()){toast("Write down what you decided first, so you can show it at the Sprint Review.");return}var a=acLeft(it),d=dodLeft(it);if(a||d){toast("Not Done yet. Still to tick: "+[a?a+" acceptance "+(a==1?"criterion":"criteria"):"",d?d+" Definition of Done "+(d==1?"condition":"conditions"):""].filter(Boolean).join(" and ")+".");return}}
+ if(to==0){it.chk={};it.acChk={}}
+ it.c=to;save();draw(true);
+ if(to==2)toast("Done! \""+it.t+"\" is now part of the Increment.")}
+function ord(i,d){var c=st.items[i].c,j=i+d;while(j>=0&&j<st.items.length&&st.items[j].c!=c)j+=d;if(j<0||j>=st.items.length)return;var t=st.items[i];st.items[i]=st.items[j];st.items[j]=t;save();draw(true)}
+function del(i){if(confirm("Remove \""+st.items[i].t+"\" from the board?")){st.items.splice(i,1);save();draw(true)}}
+function addItem(){var t=$("ni").value.trim();if(!t){$("ni").focus();return}st.items.push(mkItem(t,Math.max(1,parseInt($("np").value,10)||1)));save();draw(true);$("ni").focus({preventScroll:true});toast("Added to the bottom of the Product Backlog. Product Owner: move it up if it matters more.")}
+function chk(t){var it=st.items[+t.dataset.v],d=st.dod[+t.dataset.d];it.chk=it.chk||{};it.chk[d]=t.checked;save();draw(true)}
+function acChk(t){var it=st.items[+t.dataset.v],a=it.ac[+t.dataset.d];it.acChk=it.acChk||{};it.acChk[a]=t.checked;save();draw(true)}
+function rolesHtml(){var r=st.roles;return r?'<p><b>Product Owner:</b> '+esc(r.po)+'<br><b>Scrum Master:</b> '+esc(r.sm)+'<br><b>Developers:</b> '+r.devs.map(esc).join(", ")+'</p>':""}
+function assign(shuffle){var n=st.names.split("\n").map(function(s){return s.trim()}).filter(Boolean);if(n.length<3){$("rl").innerHTML="<p class='tip'>Enter at least 3 names.</p>";return}
+ if(shuffle)for(var i=n.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=n[i];n[i]=n[j];n[j]=t}
+ st.roles={po:n[0],sm:n[1],devs:n.slice(2)};save();draw(true)}
+function addD(){var v=$("di").value.trim();if(v){st.dod.push(v);save();draw(true);$("di").focus({preventScroll:true})}}
+function applyChg(){if(st.chg.indexOf("S$2,400")>=0&&st.budget!=2400){st.budget=2400;save();draw(true);toast("Budget updated to S$2,400. Check the budget bar.")}}
+function draw1(){var o=st.chg;do{st.chg=CH[Math.floor(Math.random()*CH.length)]}while(st.chg==o);save();draw(true);applyChg()}
+function setC(){var v=$("ci").value.trim();if(v){st.chg=v;save();draw(true);applyChg()}}
+function ret(){var n=0;st.items.forEach(function(i){if(i.c==1||i.c==3){i.c=0;i.chk={};i.acChk={};n++}});save();draw(true);toast(n?nItems(n)+" returned to the Product Backlog.":"Nothing left in the Sprint Backlog.")}
+function addR(c){var v=$("r"+c).value.trim();if(v){st.retro[c].push(v);save();draw(true);$("r"+c).focus({preventScroll:true})}}
+function list(a){return a.length?a.map(function(i){return i.t+" ("+i.p+")"}).join(", "):"none"}
+function summary(){var r=st.retro,dn=inCol(2),L=["SCRUM PARTY: TEAM SUMMARY"];
+ if(st.roles)L.push("Product Owner: "+st.roles.po+" | Scrum Master: "+st.roles.sm+" | Developers: "+st.roles.devs.join(", "));
+ L.push("Product Goal: "+(st.pgoal||"-"),"Sprint Goal: "+(st.goal||"-"),"Increment (Done): "+pts(dn)+" pts. Planned "+sgd(planned(dn))+", actual "+sgd(cost(dn)));
+ dn.forEach(function(i){L.push("  - "+i.t+": "+(i.note.replace(/\s+/g," ").trim()||"no details")+" (planned "+sgd(i.plan)+", actual "+sgd(i.cost)+")")});
+ L.push("Budget "+sgd(st.budget)+": planned "+sgd(planned(inSprint()))+", actual so far "+sgd(cost(inSprint()))+", forecast "+sgd(forecast(inSprint())));
+ if(sprintAll().length)L.push("Not finished: "+list(sprintAll()));
+ L.push("Top of Product Backlog for Sprint 2: "+list(inCol(0).slice(0,3)),"Change we handled: "+(st.chg||"-"),"Definition of Done: "+st.dod.join("; "),"Retro. Continue: "+(r.Continue.join("; ")||"-")+" | Stop: "+(r.Stop.join("; ")||"-")+" | Start: "+(r.Start.join("; ")||"-"),"Improvement for Sprint 2: "+(st.imp||"-"),"Timebox overtime: "+(overTotal()?overList().map(function(x){return x[0]+" "+fmtT(x[1])}).join("; "):"none"));
+ return L.join("\n")}
+function copyS(){var t=summary(),a=$("sumt");a.style.display="block";a.value=t;var ok=function(){toast("Summary copied. Paste it into the class chat.")};
+ function fb(){a.select();try{document.execCommand("copy");ok()}catch(e){toast("Select the text below and copy it.")}}
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,fb);else fb()}
+function quiz(){var h='<div class="card"><h3>Quick check</h3>',sc=0,n=0;Q.forEach(function(q,i){var a=st.quiz[i],done=a!=null;if(done){n++;if(a==q[2])sc++}
+ h+='<div class="q"><p><b>'+(i+1)+". "+q[0]+'</b></p>';q[1].forEach(function(o,j){var c=done?(j==q[2]?"ok":j==a?"no":""):"";h+='<button class="'+c+'" data-a="ans" data-v="'+i+'" data-d="'+j+'">'+o+'</button>'});
+ h+=(done?'<p class="tip">'+q[3]+'</p>':"")+'</div>'});
+ return h+'<p><b>Score: '+sc+" / "+Q.length+'</b>'+(n<Q.length?" (answer them all)":"")+'</p></div>'}
+function widget(k){
+ if(k=="roles")return'<div class="card"><textarea id="nm" rows="5" placeholder="One name per line" data-i="names" aria-label="Team names">'+esc(st.names)+'</textarea><div class="row" style="margin-top:8px"><button class="b alt" data-a="assign" data-d="1">Shuffle roles</button><button class="b" data-a="assign" data-d="0">Assign in this order</button></div><div id="rl">'+rolesHtml()+'</div></div>';
+ if(k=="backlog")return'<div class="card"><h3>Product Goal</h3><p class="say">The big outcome we are aiming for. The Product Owner writes it.</p><textarea rows="2" data-i="pgoal" aria-label="Product Goal" placeholder="e.g. A fun, stress-free 30th birthday party for about 30 guests, within S$3,000">'+esc(st.pgoal)+'</textarea></div><div class="card">'+hintP()+pbCol({add:1})+'</div>';
+ if(k=="dod"){var h='<div class="card"><h3>Our Definition of Done</h3>';st.dod.forEach(function(d,i){h+='<div class="dl"><span>'+esc(d)+'</span><button aria-label="Remove condition" data-a="delD" data-v="'+i+'">&#10005;</button></div>'});return h+'<div class="row" style="margin-top:8px"><input id="di" placeholder="Add a condition, e.g. Fits 30 guests"><button class="b" data-a="addD">Add</button></div></div>'}
+ if(k=="plan")return planView();
+ if(k=="sprint")return budBar()+sprintBoard({})+frozen();
+ if(k=="change")return'<div class="card"><div class="row"><button class="b alt" data-a="draw1">Draw a change card</button></div><div class="row" style="margin-top:8px"><input id="ci" placeholder="Or type the change your Stakeholder announced"><button class="b" data-a="setC">Use this change</button></div>'+(st.chg?'<div class="chg">'+esc(st.chg)+'</div>':"")+'<p class="say">Product Owner: where does this go in the Product Backlog? Team: is the Sprint Goal still reachable?</p></div>'+budBar()+sprintBoard({back:1})+'<div class="card"><p class="tip" style="margin-top:0"><span class="lock open">UNLOCKED</span>Product Owner: add the change as a new item and put it in the right place. Use &#9654; to swap it into the Sprint.</p>'+pbCol({toSprint:1,add:1})+'</div>';
+ if(k=="review")return reviewView();
+ if(k=="retro"){var h='<div class="cols">',ic={Continue:"Continue: what worked?",Stop:"Stop: what didn't work?",Start:"Start: what should we try?"};for(var c in st.retro){h+='<div class="col"><h3>'+ic[c]+'</h3>';st.retro[c].forEach(function(x){h+='<div class="sticky">'+esc(x)+'</div>'});h+='<input id="r'+c+'" placeholder="Add a note, press Enter" data-k="'+c+'" aria-label="'+c+' note"></div>'}
+  var ol=overList();h+='</div><div class="card"><h3>Timebox check</h3>'+(ol.length?'<p style="margin-top:0">Steps where you went over the timebox:</p><ul>'+ol.map(function(x){return'<li>'+x[0]+': <b>'+fmtT(x[1])+' over</b></li>'}).join("")+'</ul><p class="say" style="margin-bottom:0">Why did these take longer? What would help next Sprint?</p>':'<p class="say" style="margin:0">No overtime recorded so far. Either every timebox was kept, or the timers weren\'t used.</p>')+'</div>';
+  return h+'<div class="card"><h3>Our one improvement for Sprint 2</h3><input data-i="imp" value="'+esc(st.imp)+'" placeholder="e.g. Agree who takes notes before we start" aria-label="Improvement for Sprint 2"></div>'}
+ if(k=="refine")return'<div class="card">'+hintP()+pbCol({add:1})+'</div>';
+ if(k=="final"){var dn=inCol(2),sb=sprintAll(),rn=st.retro.Continue.length+st.retro.Stop.length+st.retro.Start.length;
+  return'<div class="card"><h3>Your Scrum board at a glance</h3><ul><li>Product Goal: '+(st.pgoal?esc(st.pgoal):"not written")+'</li><li>Sprint Goal: '+(st.goal?esc(st.goal):"not written")+'</li><li>Increment (Done): '+nItems(dn.length)+', '+pts(dn)+' pts'+(dn.length?'<ul>'+dn.map(function(i){return'<li><b>'+esc(i.t)+':</b> '+(i.note?esc(i.note):"no details")+' (planned '+sgd(i.plan)+', actual '+sgd(i.cost)+')</li>'}).join("")+'</ul>':"")+'</li><li>Budget '+sgd(st.budget)+': planned '+sgd(planned(inSprint()))+', actual so far '+sgd(cost(inSprint()))+', forecast '+sgd(forecast(inSprint()))+'</li>'+(sb.length?'<li>Still in the Sprint Backlog: '+nItems(sb.length)+'. These are not Done; they go back to the Product Backlog.</li>':"")+'<li>Product Backlog for Sprint 2: '+nItems(inCol(0).length)+'</li><li>Definition of Done: '+st.dod.length+' conditions</li><li>Retrospective notes: '+rn+'. Improvement: '+(st.imp?esc(st.imp):"not chosen")+'</li></ul><button class="b alt" data-a="copyS">Copy team summary</button><textarea id="sumt" rows="10" style="display:none;margin-top:8px" aria-label="Team summary" readonly></textarea></div>'+quiz()}
+ return""}
+function tick(){left--;if(left==0){beep();toast("Time's up for this step! The timer keeps counting so you can see the overtime.")}
+ if(left<0){st.over[st.cur]=Math.max(st.over[st.cur]||0,-left);if(left%10==0)save()}paint()}
+function paint(){var e=$("tm");if(!e)return;e.innerHTML=fmt(left);e.parentNode.className="timer"+(left<0?" late":"");var l=$("tml"),m=S[st.cur].m;if(l)l.innerHTML=left<0?"<b>Overtime!</b> The timebox was "+m+" min. Scrum Master: wrap up and move on.":"Timebox: "+m+" min"}
+function overList(){var l=[];S.forEach(function(s,i){if(st.over[i])l.push([s.h,st.over[i]])});return l}
+function overTotal(){return overList().reduce(function(a,x){return a+x[1]},0)}
+function tog(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)()}catch(e){}if(tid){stop();$("tg").textContent="Resume"}else{tid=setInterval(tick,1000);$("tg").textContent="Pause"}}
+function rst(){stop();left=S[st.cur].m*60;$("tg").textContent="Start timer";paint()}
+function draw(keep){var c=st.cur,s=S[c],y=window.scrollY,h="";nav();
+ if(c>=3&&c<=8)h+='<div class="banner">Sprint 1 in progress (part '+(c-2)+' of 6). Everything from Sprint Planning to the Retrospective happens inside the Sprint.</div>';
+ h+='<div class="card"><div class="meta"><span class="tag">'+s.k+'</span><span class="lead">Who leads: '+who(s.lead)+'</span></div><h2>Step '+(c+1)+": "+s.h+'</h2>'+s.b+'</div>';
+ if(c>=4&&c<=7)h+='<div class="goalb"><b>Our Sprint Goal:</b> '+(st.goal?esc(st.goal):'<i>not written yet. Go back to step 4 and write one.</i>')+'</div>';
+ h+='<div class="timer"><span class="t" id="tm">'+fmt(left)+'</span><span id="tml">Timebox: '+s.m+' min</span><button class="b" id="tg" data-a="tog">'+(tid?"Pause":"Start timer")+'</button><button class="b" data-a="rst">Reset</button></div>'+widget(s.w);
+ $("step").innerHTML=h;paint();budUpd();if(playK<0)hl(c);
+ $("prev").style.visibility=c?"visible":"hidden";$("next").style.visibility=c<S.length-1?"visible":"hidden";if(c<S.length-1)$("next").textContent="Next: "+S[c+1].n;
+ if(keep)window.scrollTo(0,y)}
+var F={go:function(t){go(+t.dataset.v)},to:function(t){mvTo(+t.dataset.v,+t.dataset.d)},ord:function(t){ord(+t.dataset.v,+t.dataset.d)},del:function(t){del(+t.dataset.v)},chk:chk,acchk:acChk,acadd:function(t){acAdd(+t.dataset.v)},acsug:function(t){acSug(+t.dataset.v)},acdel:function(t){var it=st.items[+t.dataset.v],a=it.ac.splice(+t.dataset.d,1)[0];if(it.acChk)delete it.acChk[a];save();draw(true)},addItem:addItem,assign:function(t){assign(t.dataset.d=="1")},addD:addD,delD:function(t){st.dod.splice(+t.dataset.v,1);save();draw(true)},draw1:draw1,setC:setC,ret:ret,copyS:copyS,ans:function(t){st.quiz[t.dataset.v]=+t.dataset.d;save();draw(true)},tog:tog,rst:rst};
+document.addEventListener("click",function(e){var t=e.target.closest("[data-a]");if(t&&F[t.dataset.a])F[t.dataset.a](t)});
+document.addEventListener("input",function(e){var t=e.target,d=t.dataset||{},k=d.i;if(!k)return;
+ if(d.v!=null){var it=st.items[+d.v];if(!it)return;if(k=="p"){var p=parseInt(t.value,10);if(p>0){it.p=p;totals()}}else if(k=="cost"||k=="plan"){it[k]=Math.max(0,parseFloat(t.value)||0);var v=varOf(it),s=$("var"+d.v);if(s){s.textContent=v.t;s.className="var "+v.c}budUpd()}else it[k]=t.value}
+ else if(k=="budget"){st.budget=Math.max(0,parseFloat(t.value)||0);budUpd()}
+ else st[k]=t.value;save()});
+document.addEventListener("keydown",function(e){var t=e.target,d=t.dataset||{};if((e.key=="Enter"||e.key==" ")&&t.getAttribute&&t.getAttribute("role")=="button"&&F[d.a]){e.preventDefault();F[d.a](t);return}if(e.key!="Enter")return;if(d.ac!=null)acAdd(+d.ac);else if(d.k)addR(d.k);else if(t.id=="ni"||t.id=="np")addItem();else if(t.id=="di")addD();else if(t.id=="ci")setC();else if(d.i=="t"||d.i=="p"||d.i=="cost"||d.i=="plan"||d.i=="budget")t.blur();else return;e.preventDefault()});
+$("prev").addEventListener("click",function(){go(st.cur-1)});
+$("next").addEventListener("click",function(){
+ if(st.cur==3){var sb=sprintAll(),miss=[];if(!sb.length)miss.push("Your Sprint Backlog is empty.");if(!st.goal.trim())miss.push("You don't have a Sprint Goal yet.");var np=sb.filter(function(i){return!(i.plan>0)}).length;if(np)miss.push(nItems(np)+" in the Sprint Backlog "+(np==1?"has":"have")+" no planned cost.");if(planned(sb)>st.budget)miss.push("Your planned cost is over the budget.");var na=sb.filter(function(i){return!i.ac.length}).length;if(na)miss.push(nItems(na)+" "+(na==1?"has":"have")+" no acceptance criteria.");
+  if(miss.length&&!confirm(miss.join("\n")+"\n\nStart the Sprint anyway?"))return}
+ go(st.cur+1);window.scrollTo(0,0)});
+$("reset").addEventListener("click",function(){if(confirm("Start over? This clears your team's board, goals and notes in this browser.")){stop();st=fresh();save();go(0);window.scrollTo(0,0)}});
+$("totmin").textContent=S.reduce(function(a,s){return a+s.m},0);
+$("fwwrap").innerHTML=fwSvg();fwHide(st.fwHide);
+$("fwplay").addEventListener("click",play);
+$("fwpause").addEventListener("click",pausePlay);
+$("fwtog").addEventListener("click",function(){st.fwHide=!st.fwHide;save();fwHide(st.fwHide)});
+try{draw()}catch(err){$("step").innerHTML='<div class="card">Something went wrong: '+esc(err.message)+'</div>'}
+})();
+</script></body></html>
