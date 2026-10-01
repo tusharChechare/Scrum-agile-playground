@@ -1,1 +1,2 @@
-# Scrum-birthday-planner
+# Agile Playground - Learn Agile by doing
+Agile Playground teaches Scrum by using it. In about 65 minutes, a team of 4–6 learners chooses a scenario (birthday party, food-ordering app, HDB renovation, or Singapore trip), forms a Scrum Team, and works through one Sprint: backlog, Definition of Done, planning, building, a change from the customer, review and retro. One person shares the screen; everyone else talks. Work saves in the browser.
